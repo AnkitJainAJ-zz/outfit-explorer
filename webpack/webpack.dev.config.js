@@ -12,8 +12,8 @@ module.exports ={
 			exclude: /node_modules/,
 			loader: 'babel-loader'
 		},{
-			test: /\.less$/,
-			loaders: ["style-loader", "css-loader", "less-loader"]
+			test: /\.scss$/,
+			loaders: ["style-loader", "css-loader", "less-loader", "sass-loader"]
 		}
 
 		]
@@ -27,5 +27,6 @@ module.exports ={
    		historyApiFallback: true,
    		host: '0.0.0.0',
 		port: 9013
-	}
+	},
+	devtool: 'source-map'
 }
