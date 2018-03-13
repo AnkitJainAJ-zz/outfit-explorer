@@ -3,7 +3,8 @@ import {getValidImageFile, extractCheckedDay} from '../../helpers/helper';
 import * as CONSTANTS from '../../constants/index';
 import './index.scss';
 import {getLocalStorage, saveLocalStorage} from '../../helpers/localStorage';
-import showOutfitComponent from '../../components/showOutfitComponent/index';
+import showOutfitComponent from '../../components/showOutfitComponent';
+import BrowseOutfits from '../../components/BrowseOutfits';
 
 
 class Home extends Component{
@@ -65,6 +66,7 @@ class Home extends Component{
 			// let day="monday";
 			// let storageFiles = CONSTANTS.storageFiles;
 			let dressList=getLocalStorage(dayChoosen)||[];
+			let currentDress={"shirt":null, "pant":null};
 		
 			let shirtDataUrl=null;
 			let pantDataUrl=null;
@@ -77,6 +79,8 @@ class Home extends Component{
 					const imageOutputTag=document.getElementById('dress-output-'+ k);
 
 					imageOutputTag.addEventListener('load',()=>{
+
+						let currentDay = extractCheckedDay('day-selector');
 	  
 				    	var imgCanvas = document.createElement("canvas"),
 			            imgContext = imgCanvas.getContext("2d");
@@ -91,7 +95,7 @@ class Home extends Component{
 				        if (k==="shirt"){
 				        	shirtDataUrl = imgCanvas.toDataURL("image/png");
 				        	// storageFiles[day][storageFiles[day].length -1].shirt=shirtDataUrl;
-
+				        	currentDress.shirt=shirtDataUrl;
 				        	this.setState({
 				    			shirtImageId:imageFile.name
 				    		})
@@ -99,6 +103,7 @@ class Home extends Component{
 				        else{
 				        	pantDataUrl = imgCanvas.toDataURL("image/png");
 				        	// storageFiles[day][storageFiles[day].length -1].pant=pantDataUrl;
+				        	currentDress.pant=pantDataUrl
 				        	this.setState({
 				    			pantImageId:imageFile.name
 				    		})
@@ -106,8 +111,8 @@ class Home extends Component{
 
 				        // console.log(k,storageFiles);
 				        if(shirtDataUrl && pantDataUrl){
-							dressList.push({shirt:shirtDataUrl, pant: pantDataUrl});
-							saveLocalStorage(dressList,dayChoosen);
+							dressList.push(currentDress);
+							saveLocalStorage(dressList,currentDay);
 						}
 
 		    		})
@@ -117,14 +122,14 @@ class Home extends Component{
 			
 		}
 		else if(action === "browse"){
-			this.setState({showOutfits:true, day:day})
+			this.setState({showOutfits:true, day:dayChoosen})
 		}
 	}
 
 	render(){
 		return(
 			<div>
-				<p> This is Sparta , sorry Home Page </p>
+				<p>Outfit makes you special , dont let it make you boring by wearing same </p>
 				<div >
 					<div>
 						{this.state.shirtUploadError? <span className="errorClass">Please upload a valid shirt image</span>:null}
@@ -138,13 +143,13 @@ class Home extends Component{
 					<div id="day-selector">
 						<p>Choose the day you wore this dress on</p>
 						{this.state.dayError?<span className="errorClass">Please Select any day to browse/upload</span>:null}
-						<input type="radio" name="day" value="monday"/>Monday
-						<input type="radio" name="day" value="tuesday"/>Tuesday
-						<input type="radio" name="day" value="wednesday"/>Wednesday
-						<input type="radio" name="day" value="thursday"/>Thursday
-						<input type="radio" name="day" value="friday"/>Friday
-						<input type="radio" name="day" value="saturday"/>Saturday
-						<input type="radio" name="day" value="sunday"/>Sunday
+						<input type="radio" name="day" value="monday" ref={(input)=> this._input = input}/>Monday
+						<input type="radio" name="day" value="tuesday" ref={(input)=> this._input = input}/>Tuesday
+						<input type="radio" name="day" value="wednesday" ref={(input)=> this._input = input}/>Wednesday
+						<input type="radio" name="day" value="thursday" ref={(input)=> this._input = input}/>Thursday
+						<input type="radio" name="day" value="friday" ref={(input)=> this._input = input}/>Friday
+						<input type="radio" name="day" value="saturday" ref={(input)=> this._input = input}/>Saturday
+						<input type="radio" name="day" value="sunday" ref={(input)=> this._input = input}/>Sunday
 					</div>
 					<div>
 						{this.state.uploadError?<span className="errorClass">Please upload both Shirt & Pant and different from last one</span>:null}
@@ -152,7 +157,8 @@ class Home extends Component{
 					</div>
 					
 					<button type="submit" value="browse" onClick={this.handleUserAction}>Browse</button>
-					{this.state.showOutfits?<showOutfitComponent daySelected={this.state.day}/>:null}
+					{this.state.showOutfits ?
+						<BrowseOutfits daySelected={this.state.day}/>:null}
 				</div>
 
 				<img src="" id="dress-output-shirt"/>

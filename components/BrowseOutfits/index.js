@@ -1,8 +1,8 @@
-import React,{Component} from 'react';
+import React, {Component} from 'react';
 import {getLocalStorage} from '../../helpers/localStorage';
 
+class BrowseOutfits extends Component {
 
-class showOutfitComponent extends Component{
 	constructor(props){
 		super(props);
 	}
@@ -11,20 +11,23 @@ class showOutfitComponent extends Component{
 		if(this.props.daySelected === nextProps.daySelected){
 			return false
 		}
+		return true;
 	}
 
-	render(){
+	render() {
 		const {daySelected}=this.props;
-		const dressList = getLocalStorage(daySelected);
-		return(
-			dressList.map((item,index)=>{
-				<div>
+		const dressList = getLocalStorage(daySelected) || [];
+		return (
+			<div>
+			{dressList.map((item,index)=>
+				<div key={index}>
 					<img src={item.shirt}/>
 					<img src={item.pant}/>
 				</div>
-			})
+			)}
+			</div>
 		)
 	}
 }
 
-export default showOutfitComponent;
+export default BrowseOutfits;
