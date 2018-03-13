@@ -3,7 +3,6 @@ import {getValidImageFile, extractCheckedDay} from '../../helpers/helper';
 import * as CONSTANTS from '../../constants/index';
 import './index.scss';
 import {getLocalStorage, saveLocalStorage} from '../../helpers/localStorage';
-import showOutfitComponent from '../../components/showOutfitComponent';
 import BrowseOutfits from '../../components/BrowseOutfits';
 
 
@@ -60,11 +59,7 @@ class Home extends Component{
 
 			fileList["shirt"]=shirtFiles
 			fileList["pant"]=pantFiles;
-			console.log(fileList);
 
-
-			// let day="monday";
-			// let storageFiles = CONSTANTS.storageFiles;
 			let dressList=getLocalStorage(dayChoosen)||[];
 			let currentDress={"shirt":null, "pant":null};
 		
@@ -129,40 +124,57 @@ class Home extends Component{
 	render(){
 		return(
 			<div>
-				<p>Outfit makes you special , dont let it make you boring by wearing same </p>
-				<div >
-					<div>
-						{this.state.shirtUploadError? <span className="errorClass">Please upload a valid shirt image</span>:null}
-						<input type="file" name="shirt" id="dress-input-shirt" accept="image/*"/>
+				<p className="headerClass">Outfit makes you special , dont let it make you look boring by wearing same </p>
+				<div className="mainWrapper">
+					<div className="fileInputWrapper">
+						<div className="fileInput">
+							<p className="fileInput__text">Please upload shirt image</p> 
+							<input type="file" name="shirt" id="dress-input-shirt" accept="image/*"/>
+							{this.state.shirtUploadError? <div className="errorClass">Please upload a valid shirt image</div>:null}
+							<img src="https://goo.gl/WXzKgn" id="dress-output-shirt" className="imageOutput"/>
+							
+						</div>
 						
 					</div>
-					<div>
-						{this.state.pantUploadError? <span className="errorClass">Please upload a valid pant image</span>:null}
-						<input type="file" name="pant" id="dress-input-pant" accept="image/*"/>
+					<div className="fileInputWrapper">
+						<div className="fileInput">
+							<p className="fileInput__text">Please upload trouser image</p> 
+							<input type="file" name="pant" id="dress-input-pant" accept="image/*"/>
+							{this.state.pantUploadError? <div className="errorClass">Please upload a valid pant image</div>:null}
+							<img src="https://goo.gl/WXzKgn" id="dress-output-pant" className="imageOutput"/>
+						</div>
+
 					</div>
-					<div id="day-selector">
+					<div id="day-selector" className="daySelector">
 						<p>Choose the day you wore this dress on</p>
+						<input type="radio" name="day" value="monday" id="monday"/>Monday&nbsp;&nbsp;
+						<input type="radio" name="day" value="tuesday" id="tuesday"/>Tuesday&nbsp;&nbsp;
+						<input type="radio" name="day" value="wednesday" id="wednesday"/>Wednesday&nbsp;&nbsp;
+						<input type="radio" name="day" value="thursday" id="thursday"/>Thursday&nbsp;&nbsp;
+						<input type="radio" name="day" value="friday" id="friday"/>Friday&nbsp;&nbsp;
+						<input type="radio" name="day" value="saturday" id="saturday"/>Saturday&nbsp;&nbsp;
+						<input type="radio" name="day" value="sunday" id="sunday"/>Sunday&nbsp;&nbsp;
 						{this.state.dayError?<span className="errorClass">Please Select any day to browse/upload</span>:null}
-						<input type="radio" name="day" value="monday" ref={(input)=> this._input = input}/>Monday
-						<input type="radio" name="day" value="tuesday" ref={(input)=> this._input = input}/>Tuesday
-						<input type="radio" name="day" value="wednesday" ref={(input)=> this._input = input}/>Wednesday
-						<input type="radio" name="day" value="thursday" ref={(input)=> this._input = input}/>Thursday
-						<input type="radio" name="day" value="friday" ref={(input)=> this._input = input}/>Friday
-						<input type="radio" name="day" value="saturday" ref={(input)=> this._input = input}/>Saturday
-						<input type="radio" name="day" value="sunday" ref={(input)=> this._input = input}/>Sunday
 					</div>
-					<div>
-						{this.state.uploadError?<span className="errorClass">Please upload both Shirt & Pant and different from last one</span>:null}
-						<button type="submit" value="upload" onClick={this.handleUserAction}>Upload</button>	
+
+					<div className="buttonWrapper">
+						<div className="buttonClass">
+							<button className="btn"type="submit" value="upload" onClick={this.handleUserAction}>Upload</button>
+							{this.state.uploadError?<div className="errorClass">Please upload both Shirt & Pant and different from last one</div>:null}	
+						</div>
+						
+						<div className="buttonClass">
+						<button className="btn" type="submit" value="browse" onClick={this.handleUserAction}>Browse</button>
+						</div>
 					</div>
-					
-					<button type="submit" value="browse" onClick={this.handleUserAction}>Browse</button>
+
+
 					{this.state.showOutfits ?
 						<BrowseOutfits daySelected={this.state.day}/>:null}
 				</div>
 
-				<img src="" id="dress-output-shirt"/>
-				<img src="" id="dress-output-pant"/>
+				
+				
 			</div>
 		)
 	}

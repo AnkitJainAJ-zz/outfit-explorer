@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {getLocalStorage} from '../../helpers/localStorage';
+import './index.scss';
 
 class BrowseOutfits extends Component {
 
@@ -7,12 +8,12 @@ class BrowseOutfits extends Component {
 		super(props);
 	}
 
-	shouldComponentUpdate(nextProps, nextState){
-		if(this.props.daySelected === nextProps.daySelected){
-			return false
-		}
-		return true;
-	}
+	// shouldComponentUpdate(nextProps, nextState){
+	// 	if(this.props.daySelected === nextProps.daySelected){
+	// 		return false
+	// 	}
+	// 	return true;
+	// }
 
 	render() {
 		const {daySelected}=this.props;
@@ -20,9 +21,9 @@ class BrowseOutfits extends Component {
 		return (
 			<div>
 			{dressList.map((item,index)=>
-				<div key={index}>
-					<img src={item.shirt}/>
-					<img src={item.pant}/>
+				<div key={index} className="showDress">
+					{item.shirt?<img src={item.shirt} className="imageOutput"/>:null}
+					{item.pant?<img src={item.pant} className="imageOutput"/>:null}
 				</div>
 			)}
 			</div>
